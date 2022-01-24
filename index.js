@@ -39,8 +39,31 @@ class Player {
     else this.velocity.x += speed;
   }
 }
+class Platform {
+  constructor() {
+    this.position = {
+      x: 100,
+      y: 100,
+    };
+    this.velocity = {
+      x: 0,
+      y: 0,
+    };
+    this.width = 200;
+    this.height = 20;
+  }
+  // Define a method || Draw the Player, Default value is gonna be applied if any value is not passed
+  draw() {
+    c.fillStyle = "blue";
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+  update() {
+    this.draw();
+  }
+}
 
 const player = new Player();
+const platform = new Platform();
 const keys = {
   right: {
     pressed: false,
@@ -54,6 +77,7 @@ function animate() {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
   player.update();
+  platform.draw();
 
   if (keys.right.pressed) {
     player.velocity.x = 5;
@@ -61,6 +85,17 @@ function animate() {
     player.velocity.x -= 5;
   } else player.velocity.x = 0;
   // console.log("animating...");
+
+  // Collision Detection
+  if (
+    player.position.y + player.height <= platform.position.y &&
+    player.position.y + player.height + player.velocity.y >=
+      platform.position.y &&
+    player.position.x + player.width >= platform.position.x &&
+    player.position.x <= platform.position.x + platform.width
+  ) {
+    player.velocity.y = 0;
+  }
 }
 
 animate();
@@ -75,8 +110,7 @@ addEventListener("keydown", ({ keyCode }) => {
     case 87:
     case 38:
       console.log("Up");
-      keys.up.pressed = true;
-      player.velocity.y -= 10;
+      player.velocity.y -= 20;
       break;
     case 83:
     case 40:
