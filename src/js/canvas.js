@@ -90,7 +90,7 @@ const genericObjects = [
     image: backgroundImage,
   }),
   new GenericObject({
-    x: 0,
+    x: 10,
     y: 0,
     image: backgroundImage,
   }),
